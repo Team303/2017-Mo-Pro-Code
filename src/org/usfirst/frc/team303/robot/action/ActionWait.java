@@ -1,4 +1,4 @@
-package org.usfirst.frc.team303.robot;
+package org.usfirst.frc.team303.robot.action;
 
 import edu.wpi.first.wpilibj.Timer;
 

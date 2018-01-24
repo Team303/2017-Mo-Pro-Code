@@ -57,10 +57,15 @@ public class Drivebase {
 		
 	}
 	
-public int getRightEncoder(){
+	public int getRightEncoder(){
 		return BR.getSelectedSensorPosition(0);
 	}
 	
+	public void zeroEncoders(){
+		
+		FL.setSelectedSensorPosition(0, 0, 0);
+		BR.setSelectedSensorPosition(0, 0, 0);
+	}
 	
 	
 }

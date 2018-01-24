@@ -2,6 +2,9 @@ package org.usfirst.frc.team303.robot;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team303.robot.action.Action;
+import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous {

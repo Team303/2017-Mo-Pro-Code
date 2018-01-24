@@ -7,6 +7,10 @@
 
 package org.usfirst.frc.team303.robot;
 
+import java.nio.file.Paths;
+
+import org.usfirst.frc.team303.robot.action.ActionWait;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,9 +29,10 @@ public class Robot extends IterativeRobot {
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	private CanCan can;
-	static Drivebase drive;
-	static NavX navX;
-	static Autonomous auto;
+	public static Drivebase drive;
+	public static NavX navX;
+	public static Autonomous auto;
+	public static Path path;
 	
 	static boolean autoRunOnce = false;
 	
@@ -38,14 +43,23 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
-		m_chooser.addObject("My Auto", kCustomAuto);
-		SmartDashboard.putData("Auto choices", m_chooser);
-		
-		//can = new CanCan();
-		drive = new Drivebase();
-		navX = new NavX();
-		auto = new Autonomous();
+		try{
+			
+			drive = new Drivebase();
+			navX = new NavX();
+			auto = new Autonomous();
+			path = new Path();
+			
+			drive.zeroEncoders();
+			m_chooser.addDefault("Default Auto", kDefaultAuto);
+			m_chooser.addObject("My Auto", kCustomAuto);
+			SmartDashboard.putData("Auto choices", m_chooser);
+			
+			//can = new CanCan();
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("error in Robot Init" + e.getMessage());
+		}
 		
 	}
 
@@ -62,10 +76,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		drive.zeroEncoders();
 		m_autoSelected = m_chooser.getSelected();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
+		auto.assembleDriveForwardFour();
+			
+		auto.arr.add(new ActionWait(9999999.0));
 	}
 
 	/**
@@ -85,9 +103,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		if(!autoRunOnce){
-			auto.assembleDriveForwardFour();
 			
-			auto.arr.add(new ActionWait(9999999.0));
 			
 			
 			
