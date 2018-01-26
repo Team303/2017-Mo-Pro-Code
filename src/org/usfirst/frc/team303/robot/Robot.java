@@ -32,7 +32,6 @@ public class Robot extends IterativeRobot {
 	public static Drivebase drive;
 	public static NavX navX;
 	public static Autonomous auto;
-	public static Path path;
 	
 	static boolean autoRunOnce = false;
 	
@@ -48,7 +47,6 @@ public class Robot extends IterativeRobot {
 			drive = new Drivebase();
 			navX = new NavX();
 			auto = new Autonomous();
-			path = new Path();
 			
 			drive.zeroEncoders();
 			m_chooser.addDefault("Default Auto", kDefaultAuto);

@@ -62,7 +62,7 @@ public class Drivebase {
 	}
 	
 	public void zeroEncoders(){
-		
+		Robot.navX.navX.zeroYaw();
 		FL.setSelectedSensorPosition(0, 0, 0);
 		BR.setSelectedSensorPosition(0, 0, 0);
 	}

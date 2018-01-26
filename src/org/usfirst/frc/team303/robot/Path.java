@@ -1,5 +1,7 @@
 package org.usfirst.frc.team303.robot;
 
+import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
+
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -7,19 +9,16 @@ import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 public class Path {
-
-boolean firstRun;
-	
 	double timeStep = 0.05;
-	double maxVel = 2;
-	double maxAccel = 7;
-	double maxJerk = 5;
+	double maxVel = 20;
+	double maxAccel = 5;
+	double maxJerk = 8;
 	double wheelBaseWidth = 2.333;
 	int ticksPerRev = 2304; 
 	double wheelDiameter = 0.3283333333333333;
 	//done in feet for now
 
-	double p = 0.001;
+	double p = 10;
 	double i = 0;
 	double d = 0;
 	double velocityRatio = 1/maxVel;
@@ -40,24 +39,16 @@ boolean firstRun;
 		Trajectory forwardTrajectory;
 		public EncoderFollower testEncLeft;
 		public EncoderFollower testEncRight;
-		Waypoint[] testPoints = new Waypoint[]{
-				new Waypoint(0,0, Pathfinder.d2r(0)),
-				new Waypoint(2,0,Pathfinder.d2r(0)),
-				
-				new Waypoint(6,0,Pathfinder.d2r(0)),
-				//new Waypoint(10,4,Pathfinder.d2r(90)),
-				//new Waypoint(10,10,Pathfinder.d2r(90))
-				//new Waypoint(4,2,Pathfinder.d2r(90))
-		};
+		
 	
-	public Path() {
+	public Path(Waypoint[] points) {
 		try{	
-			//System.loadLibrary("Pathfinder-Java");
-			firstRun = true; 
-			
+			System.out.println("Generating trajectory...");
 			Trajectory.Config testConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, timeStep, maxVel, maxAccel, maxJerk);
-			forwardTrajectory = Pathfinder.generate(testPoints, testConfig);
+			forwardTrajectory = Pathfinder.generate(points, testConfig);
 			TankModifier testModifier = new TankModifier(forwardTrajectory).modify(wheelBaseWidth);
+			System.out.println("Trajectory Generation completed");
+			
 			
 			forwardLeftTrajectory = testModifier.getLeftTrajectory();
 			forwardRightTrajectory = testModifier.getRightTrajectory();
@@ -70,7 +61,7 @@ boolean firstRun;
 			testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("error in Path COnstructor" + e.getMessage());
+			System.out.println("Error in Path Construction" + e.getMessage());
 		}
 	}
 	

@@ -7,6 +7,9 @@ import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
+
 public class Autonomous {
 
 	ArrayList<Action> arr = new ArrayList<Action>();
@@ -33,9 +36,10 @@ public class Autonomous {
 	
 	
 	public void assembleDriveForwardFour(){
-		arr.add(new ActionDriveByWaypoints());
-		
-		
+		arr.add(new ActionDriveByWaypoints(new Waypoint[]{
+				new Waypoint(0,0, Pathfinder.d2r(0)),
+				new Waypoint(Math.sqrt(3)*4, 2 , Pathfinder.d2r(30)), //move two feet in the 30 deg direction
+		}));		
 	}
 
 	/*public void assembleGearFromRBoiler() {
