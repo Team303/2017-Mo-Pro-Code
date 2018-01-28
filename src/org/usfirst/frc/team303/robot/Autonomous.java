@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team303.robot.action.Action;
 import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
+import org.usfirst.frc.team303.robot.action.ActionWait;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -30,16 +31,21 @@ public class Autonomous {
 				taskNum++;
 			}
 		}
-
+		SmartDashboard.putNumber("NavX", Robot.navX.getYaw());
 		SmartDashboard.putNumber("taskNum", taskNum);
 	}
 	
 	
 	public void assembleDriveForwardFour(){
-		arr.add(new ActionDriveByWaypoints(new Waypoint[]{
+		arr.add(new ActionDriveByWaypoints(new Waypoint[] {
 				new Waypoint(0,0, Pathfinder.d2r(0)),
-				new Waypoint(Math.sqrt(3)*4, 2 , Pathfinder.d2r(30)), //move two feet in the 30 deg direction
+				new Waypoint(7, 4 , Pathfinder.d2r(30)),
 		}));		
+		arr.add(new ActionWait(0.1));
+		arr.add(new ActionDriveByWaypoints(new Waypoint[] {
+				new Waypoint(0,0, Pathfinder.d2r(0)),
+				new Waypoint(4, -8, Pathfinder.d2r(160)),	
+		}));
 	}
 
 	/*public void assembleGearFromRBoiler() {
@@ -52,7 +58,6 @@ public class Autonomous {
 		arr.add(new ActionDriveStraightByEncoders(3000));
 		scoreGearBoiler();
 	}
-
 	public void assembleGearFromBBoiler() {
 		arr.add(new ActionZero());
 		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20250)));
@@ -63,18 +68,15 @@ public class Autonomous {
 		arr.add(new ActionDriveStraightByEncoders(3000));
 		scoreGearBoiler();
 	}
-
 	public void assembleGearFromLeftPeg() {
 		arr.add(new ActionDriveStraightByEncoders(9600));
 		arr.add(new ActionTurnToAngle(61, true, 3));
 		scoreGear();
 	}
-
 	public void assembleGearFromMidPeg() {
 		arr.add(new ActionDriveStraightByEncoders(2500));
 		scoreGear();
 	}
-
 	public void assembleGearFromRightPeg() {
 		arr.add(new ActionDriveStraightByEncoders(9600));
 		arr.add(new ActionTurnToAngle(-61, true, 3));
@@ -84,7 +86,6 @@ public class Autonomous {
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-25000));
 	}
-
 	public void scoreGearBoiler() {
 		arr.add(new ActionNacRac(false));
 		arr.add(new ActionDriveToGoalByArea(13500));
@@ -92,9 +93,7 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionWait(0.75), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
-
 	}
-
 	public void scoreGear() {
 		arr.add(new ActionNacRac(false));
 		arr.add(new ActionDriveToGoalByArea(13500));
@@ -102,9 +101,7 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionWait(0.75), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
-
 	}
-
 	public void assembleHopperFromRedAllianceStation() {
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(9500));
@@ -119,7 +116,6 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 20250)));
 		arr.add(new ActionShooter(false, 0));
 	}
-
 	public void assembleHopperFromBlueAllianceStation() { //untested and unfinished
 		arr.add(new ActionDriveStraightByEncoders(9800));
 		arr.add(new ActionTurnToAngle(95, true, 6)); //turn to the hopper
@@ -156,7 +152,6 @@ public class Autonomous {
 		arr.add(new ActionDriveStraightByEncoders(3000));
 		scoreGear();
 	}
-
 	public void assembleShooter() {
 		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20250)));
 		arr.add(new ActionShooter(false, 0));
@@ -245,5 +240,3 @@ public class Autonomous {
 		return new ActionParallelAction(conAction, nonConAction);
 */
 	}
-
-

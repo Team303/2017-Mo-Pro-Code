@@ -12,30 +12,30 @@ public class ActionDriveByWaypoints implements Action {
 	boolean firstRun = true;
 	double l;
 	double r;
-	
+
 	public ActionDriveByWaypoints(Waypoint[] points) {
 		path = new Path(points);
 	}
-	
-	
-	
+
+
+
 	@Override
 	public void run() {
-		if(firstRun) {
-			Robot.drive.zeroEncoders();
-		} 
-			l = path.testEncLeft.calculate(Robot.drive.getLeftEncoder());
-			r = path.testEncRight.calculate(Robot.drive.getRightEncoder());
-			double theta = Robot.navX.getYaw();
-			double desiredHeading = Pathfinder.r2d(path.testEncLeft.getHeading());
-			double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
-			double turn = -0.02*angleDifference;
+		if(firstRun) Robot.drive.zeroEncoders(); 
+		
+		l = path.testEncLeft.calculate(Robot.drive.getLeftEncoder());
+		r = path.testEncRight.calculate(Robot.drive.getRightEncoder());
+		double theta = Robot.navX.getYaw();
+		double desiredHeading = Pathfinder.r2d(path.testEncLeft.getHeading());
+		double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
+		double turn = -0.1*angleDifference;
 
-			Robot.drive.drive(l+turn, r-turn);
-			//SmartDashboard.putNumber("Segment");
-			SmartDashboard.putNumber("L", Robot.drive.getLeftEncoder());
-			SmartDashboard.putNumber("R", Robot.drive.getRightEncoder());
-			firstRun = false;
+		Robot.drive.drive(l+turn, r-turn);
+		//SmartDashboard.putNumber("Segment");
+		SmartDashboard.putNumber("L", Robot.drive.getLeftEncoder());
+		SmartDashboard.putNumber("R", Robot.drive.getRightEncoder());
+	
+		firstRun = false;
 	}
 
 	@Override

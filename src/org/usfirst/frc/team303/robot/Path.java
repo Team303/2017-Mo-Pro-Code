@@ -4,23 +4,24 @@ import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 public class Path {
 	double timeStep = 0.05;
-	double maxVel = 20;
-	double maxAccel = 5;
-	double maxJerk = 8;
+	double maxVel = 10;
+	double maxAccel = 8;
+	double maxJerk = 60;
 	double wheelBaseWidth = 2.333;
 	int ticksPerRev = 2304; 
 	double wheelDiameter = 0.3283333333333333;
 	//done in feet for now
 
-	double p = 10;
+	double p = 0.8;
 	double i = 0;
-	double d = 0;
+	double d = 0.15;
 	double velocityRatio = 1/maxVel;
 	double accelGain = 0;
 	
@@ -59,6 +60,11 @@ public class Path {
 			testEncRight.configureEncoder(Robot.drive.getRightEncoder(), ticksPerRev, wheelDiameter);
 			testEncLeft.configurePIDVA(p, i, d, velocityRatio, accelGain);
 			testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
+		
+			for(int i = 0; i < forwardTrajectory.segments.length; i++) {
+				System.out.println("Segment " + i + ") x: " + forwardTrajectory.segments[i].x + " y: " + forwardTrajectory.segments[i].y + " heading: " + Pathfinder.r2d(forwardTrajectory.segments[i].heading));
+			}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error in Path Construction" + e.getMessage());
