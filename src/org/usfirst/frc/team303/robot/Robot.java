@@ -12,8 +12,11 @@ import java.nio.file.Paths;
 import org.usfirst.frc.team303.robot.action.ActionWait;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +57,33 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putData("Auto choices", m_chooser);
 			
 			//can = new CanCan();
+			
+			NetworkTable pathfinderInputTable = NetworkTable.getTable("pathfinderInput");
+			//NetworkTable pathfinderOutputTable = NetworkTable.getTable("pathfinderOutput");	
+			
+			pathfinderInputTable.putNumber("timeStep", Path.timeStep);
+			pathfinderInputTable.putNumber("maxVel", Path.maxVel);
+			pathfinderInputTable.putNumber("maxAccel", Path.maxAccel);
+			pathfinderInputTable.putNumber("maxJerk", Path.maxJerk);
+
+			pathfinderInputTable.putString("waypoints", Path.serializeWaypointArray2d(new Waypoint[][] {
+				{//this is waypoints[0], and will output to trajectories[0]
+					new Waypoint(0, 0, 0), 
+					new Waypoint(7, 4 , Pathfinder.d2r(30)), //this point is waypoints[0, 1]
+					new Waypoint(4, -8, Pathfinder.d2r(160)),
+					new Waypoint(7, 4, Pathfinder.d2r(30)),
+					
+				}, {
+					new Waypoint(0, 0, 0), //this point is waypoints[1, 0]
+					new Waypoint(1, 0, 0)
+				}, {//this is waypoints[2] and will output to trajectories[2]
+					new Waypoint(0, 0, 0),
+					new Waypoint(1, 0, 0),
+					new Waypoint(2, 0, 0)
+				}
+			}));
+
+			NetworkTable.flush();
 		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("error in Robot Init" + e.getMessage());

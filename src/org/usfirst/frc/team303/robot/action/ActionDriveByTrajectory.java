@@ -1,20 +1,21 @@
 package org.usfirst.frc.team303.robot.action;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.Trajectory;
 
 import org.usfirst.frc.team303.robot.Path;
 import org.usfirst.frc.team303.robot.Robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ActionDriveByWaypoints implements Action {
+public class ActionDriveByTrajectory implements Action {
 	public Path path;
 	boolean firstRun = true;
 	double l;
 	double r;
 
-	public ActionDriveByWaypoints(Waypoint[] points) {
-		path = new Path(points);
+	public ActionDriveByTrajectory(Trajectory trajectory) {
+		path = new Path(trajectory);
 	}
 
 
@@ -28,7 +29,7 @@ public class ActionDriveByWaypoints implements Action {
 		double theta = Robot.navX.getYaw();
 		double desiredHeading = Pathfinder.r2d(path.testEncLeft.getHeading());
 		double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
-		double turn = -0.1*angleDifference;
+		double turn = -0.15*angleDifference;
 
 		Robot.drive.drive(l+turn, r-turn);
 		//SmartDashboard.putNumber("Segment");
@@ -40,7 +41,7 @@ public class ActionDriveByWaypoints implements Action {
 
 	@Override
 	public boolean isFinished() {
-		return path.testEncRight.getSegment().equals(path.forwardRightTrajectory.get(path.forwardRightTrajectory.length() - 1)) && path.testEncLeft.getSegment().equals(path.forwardLeftTrajectory.get(path.forwardLeftTrajectory.length() - 1));
+		return false;
 	}
 
 }

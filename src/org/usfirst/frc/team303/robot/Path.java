@@ -1,7 +1,16 @@
 package org.usfirst.frc.team303.robot;
 
-import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Base64;
 
+import org.usfirst.frc.team303.robot.action.ActionDriveByTrajectory;
+
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
@@ -10,10 +19,11 @@ import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 public class Path {
-	double timeStep = 0.05;
-	double maxVel = 10;
-	double maxAccel = 8;
-	double maxJerk = 60;
+	
+	static double timeStep = 0.05;
+	static double maxVel = 10;
+	static double maxAccel = 8;
+	static double maxJerk = 60;
 	double wheelBaseWidth = 2.333;
 	int ticksPerRev = 2304; 
 	double wheelDiameter = 0.3283333333333333;
@@ -31,25 +41,26 @@ public class Path {
 		// The fourth argument is the velocity ratio. This is 1 over the maximum velocity you provided in the 
 		//	      trajectory configuration (it translates m/s to a -1 to 1 scale that your motors can read)
 		// The fifth argument is your acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
+	
 
 		double l;
 		double r;
-
+		public Trajectory[] trajectoryArray;
 		public Trajectory forwardLeftTrajectory;
 		public Trajectory forwardRightTrajectory;
-		Trajectory forwardTrajectory;
 		public EncoderFollower testEncLeft;
 		public EncoderFollower testEncRight;
 		
 	
-	public Path(Waypoint[] points) {
+	public Path(Trajectory forwardTrajectory) {
 		try{	
-			System.out.println("Generating trajectory...");
+			/*System.out.println("Generating trajectory...");
 			Trajectory.Config testConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, timeStep, maxVel, maxAccel, maxJerk);
 			forwardTrajectory = Pathfinder.generate(points, testConfig);
 			TankModifier testModifier = new TankModifier(forwardTrajectory).modify(wheelBaseWidth);
-			System.out.println("Trajectory Generation completed");
+			System.out.println("Trajectory Generation completed");*/
 			
+			TankModifier testModifier = new TankModifier(forwardTrajectory).modify(wheelBaseWidth);
 			
 			forwardLeftTrajectory = testModifier.getLeftTrajectory();
 			forwardRightTrajectory = testModifier.getRightTrajectory();
@@ -61,9 +72,9 @@ public class Path {
 			testEncLeft.configurePIDVA(p, i, d, velocityRatio, accelGain);
 			testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
 		
-			for(int i = 0; i < forwardTrajectory.segments.length; i++) {
+			/*for(int i = 0; i < forwardTrajectory.segments.length; i++) {
 				System.out.println("Segment " + i + ") x: " + forwardTrajectory.segments[i].x + " y: " + forwardTrajectory.segments[i].y + " heading: " + Pathfinder.r2d(forwardTrajectory.segments[i].heading));
-			}
+			}*/
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -71,11 +82,31 @@ public class Path {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	public static Trajectory[] deserializeTrajectoryArray(String serializedTrajectoryArray) {
+		Trajectory[] trajectories = null; 
+		try {
+			byte[] b = Base64.getDecoder().decode(serializedTrajectoryArray.getBytes()); 
+			ByteArrayInputStream bi = new ByteArrayInputStream(b);
+			ObjectInputStream si = new ObjectInputStream(bi);
+			trajectories = (Trajectory[]) si.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return trajectories;
+	}
+
+	public static String serializeWaypointArray2d(Waypoint[][] waypoints2d) {
+		String serializedWaypoints = "";
+		try {
+			ByteArrayOutputStream bo = new ByteArrayOutputStream();
+			ObjectOutputStream so = new ObjectOutputStream(bo);
+			so.writeObject(waypoints2d);
+			so.flush();
+			serializedWaypoints = new String(Base64.getEncoder().encode(bo.toByteArray()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return serializedWaypoints;
+	}
+
 }

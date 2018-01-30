@@ -3,18 +3,24 @@ package org.usfirst.frc.team303.robot;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team303.robot.action.Action;
-import org.usfirst.frc.team303.robot.action.ActionDriveByWaypoints;
+import org.usfirst.frc.team303.robot.action.ActionDriveByTrajectory;
 import org.usfirst.frc.team303.robot.action.ActionWait;
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
 public class Autonomous {
-
+	NetworkTable pathfinderOutputTable = NetworkTable.getTable("pathfinderOutput");		
 	ArrayList<Action> arr = new ArrayList<Action>();
 	int taskNum = 0;
+	public Trajectory[] trajectoryArray;
+	public Trajectory forwardLeftTrajectory;
+	public Trajectory forwardRightTrajectory;
+	Trajectory forwardTrajectory;
 
 	public Autonomous() {
 
@@ -36,16 +42,10 @@ public class Autonomous {
 	}
 	
 	
-	public void assembleDriveForwardFour(){
-		arr.add(new ActionDriveByWaypoints(new Waypoint[] {
-				new Waypoint(0,0, Pathfinder.d2r(0)),
-				new Waypoint(7, 4 , Pathfinder.d2r(30)),
-		}));		
-		arr.add(new ActionWait(0.1));
-		arr.add(new ActionDriveByWaypoints(new Waypoint[] {
-				new Waypoint(0,0, Pathfinder.d2r(0)),
-				new Waypoint(4, -8, Pathfinder.d2r(160)),	
-		}));
+	public void assembleDriveForwardFour(){ //TODO change auto name to match trajectory goal
+		trajectoryArray = Path.deserializeTrajectoryArray(pathfinderOutputTable.getString("path", ""));
+		forwardTrajectory = trajectoryArray[0];
+		arr.add(new ActionDriveByTrajectory(forwardTrajectory));
 	}
 
 	/*public void assembleGearFromRBoiler() {
