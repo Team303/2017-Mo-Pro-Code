@@ -25,6 +25,7 @@ import jaci.pathfinder.Waypoint;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+@SuppressWarnings("deprecation")
 public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
@@ -68,11 +69,10 @@ public class Robot extends IterativeRobot {
 
 			pathfinderInputTable.putString("waypoints", Path.serializeWaypointArray2d(new Waypoint[][] {
 				{//this is waypoints[0], and will output to trajectories[0]
-					new Waypoint(0, 0, 0), 
-					new Waypoint(7, 4 , Pathfinder.d2r(30)), //this point is waypoints[0, 1]
-					new Waypoint(4, -8, Pathfinder.d2r(160)),
-					new Waypoint(7, 4, Pathfinder.d2r(30)),
-					
+					new Waypoint(0, 0, 0),
+					new Waypoint(7, 4, Pathfinder.d2r(30)), //this point is waypoints[0, 1]
+					new Waypoint(12, 3.5, 0),
+					new Waypoint(15, 4, 0)
 				}, {
 					new Waypoint(0, 0, 0), //this point is waypoints[1, 0]
 					new Waypoint(1, 0, 0)

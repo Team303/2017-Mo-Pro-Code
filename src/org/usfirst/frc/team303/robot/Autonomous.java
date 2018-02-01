@@ -13,7 +13,9 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
+@SuppressWarnings("deprecation")
 public class Autonomous {
+	
 	NetworkTable pathfinderOutputTable = NetworkTable.getTable("pathfinderOutput");		
 	ArrayList<Action> arr = new ArrayList<Action>();
 	int taskNum = 0;

@@ -29,19 +29,19 @@ public class ActionDriveByTrajectory implements Action {
 		double theta = Robot.navX.getYaw();
 		double desiredHeading = Pathfinder.r2d(path.testEncLeft.getHeading());
 		double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
-		double turn = -0.15*angleDifference;
+		double turn = -0.07*angleDifference;
 
 		Robot.drive.drive(l+turn, r-turn);
 		//SmartDashboard.putNumber("Segment");
 		SmartDashboard.putNumber("L", Robot.drive.getLeftEncoder());
 		SmartDashboard.putNumber("R", Robot.drive.getRightEncoder());
-	
+		SmartDashboard.putBoolean("Heading = navX?", Math.abs(Robot.navX.getYaw() - Pathfinder.r2d(path.testEncLeft.getHeading())) <= 5);
 		firstRun = false;
 	}
 
 	@Override
 	public boolean isFinished() {
-		return false;
+		return path.testEncLeft.isFinished() && path.testEncRight.isFinished();
 	}
 
 }
