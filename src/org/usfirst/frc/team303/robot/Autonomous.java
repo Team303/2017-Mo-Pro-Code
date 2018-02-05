@@ -233,8 +233,8 @@ public class Autonomous {
 		scoreGear();
 	}
 	
-	*/
-	/*public ActionParallelAction makeSimpleParallelAction(Action con, Action nonCon) {
+	
+	public ActionParallelAction makeSimpleParallelAction(Action con, Action nonCon) {
 		ArrayList<Action> nonConAction = new ArrayList<Action>();
 		nonConAction.add(nonCon);
 		ArrayList<Action> conAction = new ArrayList<Action>();

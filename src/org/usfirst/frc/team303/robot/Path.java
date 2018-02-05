@@ -21,19 +21,20 @@ import jaci.pathfinder.modifiers.TankModifier;
 public class Path {
 	
 	static double timeStep = 0.02;
-	static double maxVel = 10;
-	static double maxAccel = 10;
-	static double maxJerk = 40;
+	static double maxVel = 11;
+	static double maxAccel = 12;
+	static double maxJerk = 100;
 	double wheelBaseWidth = 2.333;
 	int ticksPerRev = 2304; 
 	double wheelDiameter = 0.3283333333333333;
 	//done in feet for now
-
-	double p = 0.5;
+	//watch out for a table right about there
+	
+	double p = 1;
 	double i = 0;
-	double d = 0.01;
+	double d = 0.08;
 	double velocityRatio = 1/maxVel;
-	double accelGain = 0.05;
+	double accelGain = 0.06;
 	
 	// The first argument is the proportional gain. Usually this will be quite high
 		// The second argument is the integral gain. This is unused for motion profiling

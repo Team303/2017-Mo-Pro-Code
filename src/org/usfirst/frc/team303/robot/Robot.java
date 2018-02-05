@@ -31,14 +31,12 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
-
 	private CanCan can;
 	public static Drivebase drive;
 	public static NavX navX;
 	public static Autonomous auto;
 	
 	static boolean autoRunOnce = false;
-	
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -47,7 +45,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		try{
-			
 			drive = new Drivebase();
 			navX = new NavX();
 			auto = new Autonomous();
@@ -71,15 +68,19 @@ public class Robot extends IterativeRobot {
 				{//this is waypoints[0], and will output to trajectories[0]
 					new Waypoint(0, 0, 0),
 					new Waypoint(7, 4, Pathfinder.d2r(30)), //this point is waypoints[0, 1]
-					new Waypoint(12, 3.5, 0),
-					new Waypoint(15, 4, 0)
+					new Waypoint(13, 3.5, 0),
+					new Waypoint(18, 4, 0)
 				}, {
 					new Waypoint(0, 0, 0), //this point is waypoints[1, 0]
-					new Waypoint(1, 0, 0)
+					new Waypoint(7, 6, Pathfinder.d2r(30)),
+					new Waypoint(12, 1, 0),
+					new Waypoint(18, 4, 0)
 				}, {//this is waypoints[2] and will output to trajectories[2]
 					new Waypoint(0, 0, 0),
-					new Waypoint(1, 0, 0),
-					new Waypoint(2, 0, 0)
+					new Waypoint(4, -4, Pathfinder.d2r(330)),
+					new Waypoint(8, -6, 0),
+					new Waypoint(12, -4, Pathfinder.d2r(90)),
+					new Waypoint(10, 2, Pathfinder.d2r(180))
 				}
 			}));
 
