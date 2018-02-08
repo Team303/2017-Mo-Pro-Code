@@ -53,14 +53,7 @@ public class Path {
 		public EncoderFollower testEncRight;
 		
 	
-	public Path(Trajectory forwardTrajectory) {
-		try{	
-			/*System.out.println("Generating trajectory...");
-			Trajectory.Config testConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, timeStep, maxVel, maxAccel, maxJerk);
-			forwardTrajectory = Pathfinder.generate(points, testConfig);
-			TankModifier testModifier = new TankModifier(forwardTrajectory).modify(wheelBaseWidth);
-			System.out.println("Trajectory Generation completed");*/
-			
+	public Path(Trajectory forwardTrajectory) {	
 			TankModifier testModifier = new TankModifier(forwardTrajectory).modify(wheelBaseWidth);
 			
 			forwardLeftTrajectory = testModifier.getLeftTrajectory();
@@ -71,18 +64,14 @@ public class Path {
 			testEncLeft.configureEncoder(Robot.drive.getLeftEncoder(), ticksPerRev, wheelDiameter);
 			testEncRight.configureEncoder(Robot.drive.getRightEncoder(), ticksPerRev, wheelDiameter);
 			testEncLeft.configurePIDVA(p, i, d, velocityRatio, accelGain);
-			testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
-		
-			/*for(int i = 0; i < forwardTrajectory.segments.length; i++) {
-				System.out.println("Segment " + i + ") x: " + forwardTrajectory.segments[i].x + " y: " + forwardTrajectory.segments[i].y + " heading: " + Pathfinder.r2d(forwardTrajectory.segments[i].heading));
-			}*/
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println("Error in Path Construction" + e.getMessage());
-		}
+			testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);	
 	}
 	
+/**
+ * Method used to turn the serialized Trajectory Array string back in to a Trajectory Array object.
+ * @param serialized Trajectory Array
+ * @return Array of Trajectory objects
+ */
 	public static Trajectory[] deserializeTrajectoryArray(String serializedTrajectoryArray) {
 		Trajectory[] trajectories = null; 
 		try {
@@ -95,7 +84,12 @@ public class Path {
 		}
 		return trajectories;
 	}
-
+	
+/**
+ * Method used to turn the 2-D Waypoints Array in Robot.java into a string that can be passed to the Remote Path Generator through the NetworkTables input table.
+ * @param 2-D Array of Waypoints
+ * @return Serialized 2-D Waypoint Array 
+ */
 	public static String serializeWaypointArray2d(Waypoint[][] waypoints2d) {
 		String serializedWaypoints = "";
 		try {

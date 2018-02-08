@@ -5,6 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------*/
+/* 	██████╗  ██████╗ ██████╗  */
+/* 	╚════██╗██╔═████╗╚════██╗ */
+/* 	 █████╔╝██║██╔██║ █████╔╝ */
+/* 	 ╚═══██╗████╔╝██║ ╚═══██╗ */
+/* 	██████╔╝╚██████╔╝██████╔╝ */
+/* 	╚═════╝  ╚═════╝ ╚═════╝  */
+/*----------------------------*/  
+                    
+
 package org.usfirst.frc.team303.robot;
 
 import java.nio.file.Paths;
@@ -57,7 +67,6 @@ public class Robot extends IterativeRobot {
 			//can = new CanCan();
 			
 			NetworkTable pathfinderInputTable = NetworkTable.getTable("pathfinderInput");
-			//NetworkTable pathfinderOutputTable = NetworkTable.getTable("pathfinderOutput");	
 			
 			pathfinderInputTable.putNumber("timeStep", Path.timeStep);
 			pathfinderInputTable.putNumber("maxVel", Path.maxVel);
@@ -85,7 +94,7 @@ public class Robot extends IterativeRobot {
 			}));
 
 			NetworkTable.flush();
-		}catch(Exception e){
+		} catch(Exception e) {
 			e.printStackTrace();
 			System.out.println("error in Robot Init" + e.getMessage());
 		}
